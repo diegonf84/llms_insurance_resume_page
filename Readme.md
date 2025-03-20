@@ -18,8 +18,8 @@ Aplicación para extraer, resumir y comparar información de sitios web de compa
 
 1. Clonar el repositorio:
 ```bash
-git clone https://github.com/diegonf84/llms_insurance_resume_webpage.git
-cd comparador-aseguradoras
+git clone https://github.com/diegonf84/llms_insurance_resume_page.git
+cd llms_insurance_resume_page
 ```
 
 2. Instalar dependencias:
