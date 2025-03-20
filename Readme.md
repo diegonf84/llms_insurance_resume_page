@@ -85,3 +85,7 @@ comparador-aseguradoras/
 ├── code_example.py             # Ejemplo de uso para probar en terminal
 └── README.md                   # Documentación
 ```
+
+## TODO
+* Ampliar la cantidad de compañias de seguros
+* Ejecutar los resumenes completos, debido a que actualmente se utilizan pocos caracteres por el tamaño de la ventana de contexto de los modelos

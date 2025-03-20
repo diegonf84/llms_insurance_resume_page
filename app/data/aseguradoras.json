@@ -8,5 +8,90 @@
       "id": "sancor",
       "nombre": "Sancor Seguros",
       "url": "https://www.sancorseguros.com.ar/"
+    },
+    {
+      "id": "libra",
+      "nombre": "Libra Seguros",
+      "url": "https://libraseguros.com.ar/"
+    },
+    {
+      "id": "lacaja",
+      "nombre": "La Caja de Seguros",
+      "url": "https://seguros.lacaja.com.ar/"
+    },
+    {
+      "id": "sancristobal",
+      "nombre": "San Cristobal Seguros",
+      "url": "https://www.sancristobal.com.ar/institucional/"
+    },
+    {
+      "id": "allianz",
+      "nombre": "Allianz",
+      "url": "https://www.allianz.com.ar/"
+    },
+    {
+      "id": "zurich",
+      "nombre": "Zurcih Seguros",
+      "url": "https://www.zurich.com.ar/"
+    },
+    {
+      "id": "provnciaseguros",
+      "nombre": "Provincia Seguros",
+      "url": "https://www.provinciaseguros.com.ar/"
+    },
+    {
+      "id": "meridional",
+      "nombre": "Meridional Seguros",
+      "url": "https://www.meridionalseguros.seg.ar/"
+    },
+    {
+      "id": "bbva",
+      "nombre": "BBVA Seguros",
+      "url": "https://www.bbvaseguros.com.ar/"
+    },
+    {
+      "id": "galicia",
+      "nombre": "Galicia Seguros",
+      "url": "https://www.galiciaseguros.com.ar/"
+    },
+    {
+      "id": "mapfre",
+      "nombre": "Mapfre",
+      "url": "https://www.mapfre.com.ar/"
+    },
+    {
+      "id": "lifeseguros",
+      "nombre": "Life Seguros",
+      "url": "https://www.lifeseguros.com.ar/"
+    },
+    {
+      "id": "laholando",
+      "nombre": "La Holando Seguros",
+      "url": "https://www.laholando.com/"
+    },
+    {
+      "id": "integrity",
+      "nombre": "Integrity Seguros",
+      "url": "https://integrityseguros.com.ar/"
+    },
+    {
+      "id": "chubb",
+      "nombre": "Chubb",
+      "url": "https://www.chubb.com/ar-es/"
+    },
+    {
+      "id": "swissmedical",
+      "nombre": "Swiss Medical Seguros",
+      "url": "https://www.swissmedicalseguros.com/"
+    },
+    {
+      "id": "cooperacionseguros",
+      "nombre": "Cooperación Seguros",
+      "url": "https://www.cooperacionseguros.com.ar/"
+    },
+    {
+      "id": "iapser",
+      "nombre": "IAPSER Seguros",
+      "url": "https://www.iapserseguros.seg.ar/"
     }
   ]
