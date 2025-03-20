@@ -1,0 +1,21 @@
+name: insurance_resume_page
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pip
+  - requests
+  - jupyterlab
+  - ipywidgets
+  - matplotlib
+  - jupyter-dash
+  - python-dotenv
+  - pip:
+    - pandas==2.1.4
+    - PyYAML
+    - jupyter-contrib-nbextensions 
+    - scipy
+    - setuptools
+    - google-generativeai
+    - streamlit==1.43.2

@@ -1,0 +1,9 @@
+requests
+python-dotenv
+pandas==2.1.4
+PyYAML
+scipy
+setuptools
+google-generativeai
+streamlit==1.43.2
+beautifulsoup4==4.12.2
