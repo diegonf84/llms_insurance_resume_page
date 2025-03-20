@@ -68,14 +68,15 @@ def procesar_aseguradora(aseguradora, max_chars):
 
 def main():
     st.set_page_config(
-        page_title="Comparador de Aseguradoras",
-        page_icon="🔍",
+        page_title="Web Insurance Analyzer",
+        page_icon="🌐",
         layout="wide"
     )
     
     # Título en la página principal
     st.title("Web Insurance Analyzer")
     st.markdown("Herramienta para comparar información de sitios web de 2 aseguradoras del mercado en Argentina")
+    st.info("📝 Los resúmenes están limitados a 60,000 caracteres como máximo para garantizar el uso de la API gratuita de Gemini Pro 1.5")
     
     # Cargar aseguradoras
     aseguradoras = cargar_aseguradoras()

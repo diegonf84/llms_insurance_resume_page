@@ -19,3 +19,4 @@ dependencies:
     - setuptools
     - google-generativeai
     - streamlit==1.43.2
+    - html5lib

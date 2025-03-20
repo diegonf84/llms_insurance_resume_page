@@ -25,14 +25,14 @@
       "url": "https://www.sancristobal.com.ar/institucional/"
     },
     {
-      "id": "allianz",
-      "nombre": "Allianz",
-      "url": "https://www.allianz.com.ar/"
+      "id": "elnorte",
+      "nombre": "El Norte",
+      "url": "https://www.elnorte.com.ar/"
     },
     {
-      "id": "zurich",
-      "nombre": "Zurcih Seguros",
-      "url": "https://www.zurich.com.ar/"
+      "id": "lifegroup",
+      "nombre": "Life Group Seguros",
+      "url": "https://www.lifegroupseguros.com.ar/"
     },
     {
       "id": "provnciaseguros",
@@ -40,9 +40,9 @@
       "url": "https://www.provinciaseguros.com.ar/"
     },
     {
-      "id": "meridional",
-      "nombre": "Meridional Seguros",
-      "url": "https://www.meridionalseguros.seg.ar/"
+      "id": "horizonte",
+      "nombre": "Horizonte Seguros",
+      "url": "https://horizonte.com.ar/"
     },
     {
       "id": "bbva",

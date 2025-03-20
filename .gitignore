@@ -37,3 +37,6 @@ website_summary.log
 resumen_*.md
 comparativa_*.md
 *.ipynb
+
+# Streamlit files
+.streamlit/secrets.toml

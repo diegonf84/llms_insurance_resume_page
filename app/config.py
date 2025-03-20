@@ -1,12 +1,17 @@
 # config.py
 import os
+import streamlit as st
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
 
 # API Keys
-GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+try:
+    GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
+except:
+    # Fallback para desarrollo local usando variables de entorno
+    GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
 
 # Web Scraping Settings
 DEFAULT_USER_AGENT = 'Mozilla/5.0'

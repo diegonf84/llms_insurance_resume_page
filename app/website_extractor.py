@@ -21,10 +21,18 @@ class WebsiteExtractor:
         
         # Persistent session for connection reuse
         self.session = requests.Session()
-        self.session.headers.update({'User-Agent': DEFAULT_USER_AGENT})
         
-        # Precompile URL regex pattern
-        self.url_pattern = re.compile(r'https?://[^\s\'"]+|/[^\s\'"]+')
+        # Improved headers to avoid blocking
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            'Accept-Language': 'en-US,en;q=0.5',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
+        })
+        
+        # Improved URL pattern to avoid capturing invalid URLs
+        self.url_pattern = re.compile(r'https?://[^\s\'"<>]+|/[a-zA-Z0-9_\-\.\/]+\.html?')
         
         # Filtering patterns
         self.exclude_patterns = EXCLUDE_PATTERNS
@@ -39,7 +47,21 @@ class WebsiteExtractor:
         try:
             response = self.session.get(url, timeout=REQUEST_TIMEOUT)
             response.raise_for_status()
-            return BeautifulSoup(response.text, 'html.parser')
+            # Using html5lib for better parsing
+            return BeautifulSoup(response.text, 'html5lib')
+        except requests.exceptions.SSLError:
+            # Handle SSL errors for specific domains
+            if any(domain in url for domain in ['galiciaseguros.com.ar', 'integrityseguros.com.ar']):
+                logging.warning(f"SSL verification failed for {url}. Proceeding with verification disabled.")
+                try:
+                    response = self.session.get(url, verify=False, timeout=REQUEST_TIMEOUT)
+                    response.raise_for_status()
+                    return BeautifulSoup(response.text, 'html5lib')
+                except Exception as e:
+                    logging.error(f"Still error fetching {url} with verification disabled: {e}")
+                    return None
+            logging.error(f"SSL Error fetching {url}")
+            return None 
         except Exception as e:
             logging.error(f"Error fetching {url}: {e}")
             return None
@@ -84,18 +106,44 @@ class WebsiteExtractor:
             except Exception as e:
                 logging.error(f"Error in extractor {extractor.__name__}: {e}")
         
-        # Convert to absolute URLs
-        absolute_links = [urljoin(current_url, link) for link in links]
+        # Convert to absolute URLs with error handling
+        absolute_links = []
+        for link in links:
+            try:
+                if isinstance(link, str):  # Ensure it's a string
+                    abs_link = urljoin(current_url, link)
+                    absolute_links.append(abs_link)
+            except ValueError as e:
+                logging.warning(f"Skipping invalid URL: {link}, Error: {e}")
+        
         self.all_links = list(set(absolute_links))
         return self.all_links
     
     def _extract_a_tags(self, soup):
-        """Basic extractor for <a> tags"""
+        """Enhanced extractor for <a> tags, including navigation menus"""
         links = set()
+        
+        # Buscar todos los enlaces con href
         for a in soup.find_all('a', href=True):
             href = a['href']
             if href and not href.startswith(('javascript:', '#', 'mailto:', 'tel:')):
                 links.add(href)
+        
+        # Específicamente buscar enlaces en menús de navegación
+        nav_selectors = [
+            'nav a', '.nav a', '.menu a', '.navigation a',
+            '.c-header a', '.header a', '.navbar a',
+            'ul.c-header__navigation-level-2-list a'
+        ]
+        
+        for selector in nav_selectors:
+            try:
+                for link in soup.select(selector):
+                    if link.has_attr('href') and not link['href'].startswith(('javascript:', '#', 'mailto:', 'tel:')):
+                        links.add(link['href'])
+            except Exception as e:
+                logging.warning(f"Error extracting with selector {selector}: {e}")
+        
         return links
     
     def _extract_data_attributes(self, soup):
