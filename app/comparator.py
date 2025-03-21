@@ -2,6 +2,7 @@
 import logging
 import google.generativeai as genai
 from config import GEMINI_API_KEY, SUMMARY_TEMPERATURE, COMPARATIVE_MAX_TOKENS
+from summarizer import APILimitError
 
 def compare_insurance_companies(resumen1, resumen2, nombre_cia1, nombre_cia2):
     """
@@ -15,6 +16,9 @@ def compare_insurance_companies(resumen1, resumen2, nombre_cia1, nombre_cia2):
         
     Returns:
         Análisis comparativo en formato markdown
+        
+    Raises:
+        APILimitError: Si hay problemas con la API de Gemini
     """
     logging.info(f"Iniciando comparación entre {nombre_cia1} y {nombre_cia2}")
     
@@ -72,7 +76,10 @@ def compare_insurance_companies(resumen1, resumen2, nombre_cia1, nombre_cia2):
     
     # Generar respuesta
     logging.info("Generando análisis comparativo")
-    response = model.generate_content(prompt)
-    
-    logging.info("Análisis comparativo generado con éxito")
-    return response.text
+    try:
+        response = model.generate_content(prompt)
+        logging.info("Análisis comparativo generado con éxito")
+        return response.text
+    except Exception as e:
+        logging.error(f"Error al generar análisis comparativo con Gemini API: {e}")
+        raise APILimitError("Error al comunicarse con la API de Gemini. Posiblemente se alcanzó el límite de uso.")

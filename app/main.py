@@ -4,7 +4,7 @@ import os
 import logging
 from website_extractor import WebsiteExtractor
 from content_processor import get_all_pages_content
-from summarizer import summarize_with_gemini
+from summarizer import summarize_with_gemini, APILimitError
 from comparator import compare_insurance_companies
 from config import MAX_PAGES, MAX_CHARS_FOR_ANALYSIS, COMPARATIVE_MAX_TOKENS
 
@@ -64,16 +64,21 @@ def procesar_aseguradora(aseguradora, max_chars):
     progress_placeholder.progress(70)
     
     status_text.text(f"Generando resumen de {aseguradora['nombre']}...")
-    summary = summarize_with_gemini(content[:max_chars])
-    progress_placeholder.progress(100)
-    
-    # Guardar resumen
-    with open(archivo_resumen, 'w', encoding='utf-8') as f:
-        f.write(summary)
-    
-    status_text.text(f"Procesamiento de {aseguradora['nombre']} completado.")
-    
-    return summary
+    try:
+        summary = summarize_with_gemini(content[:max_chars])
+        progress_placeholder.progress(100)
+        
+        # Guardar resumen
+        with open(archivo_resumen, 'w', encoding='utf-8') as f:
+            f.write(summary)
+        
+        status_text.text(f"Procesamiento de {aseguradora['nombre']} completado.")
+        return summary
+    except APILimitError as e:
+        progress_placeholder.empty()
+        status_text.empty()
+        st.error(f"⚠️ {str(e)} Por favor, espera unos minutos e intenta nuevamente.")
+        return None
 
 def main():
     st.set_page_config(
@@ -85,6 +90,11 @@ def main():
     # Título en la página principal
     st.title("Web Insurance Analyzer")
     st.markdown("Herramienta para comparar información de sitios web de 2 aseguradoras del mercado en Argentina")
+    st.markdown("""
+    **¿Cómo funciona?**  
+    Esta herramienta permite seleccionar dos aseguradoras, extraer texto plano del sitio web de cada una de ellas, 
+    resumir la información utilizando Gemini y comparar los resultados para ofrecer un análisis detallado.
+    """)
     st.info("📝 Los resúmenes están limitados a 60,000 caracteres como máximo para garantizar el uso de la API gratuita de Gemini Pro 1.5")
     
     # Cargar aseguradoras
@@ -164,10 +174,14 @@ def main():
         with col1:
             st.write(f"Procesando {cia1['nombre']}...")
             resumen1 = procesar_aseguradora(cia1, max_chars)
+            if resumen1 is None:
+                st.stop()  # Detener la ejecución si hay un error de API
         
         with col2:
             st.write(f"Procesando {cia2['nombre']}...")
             resumen2 = procesar_aseguradora(cia2, max_chars)
+            if resumen2 is None:
+                st.stop()  # Detener la ejecución si hay un error de API
         
         # Comparar
         st.subheader("Generando comparativa...")
@@ -180,9 +194,17 @@ def main():
                 comparativa = f.read()
         else:
             with st.spinner("Generando nuevo análisis comparativo..."):
-                comparativa = compare_insurance_companies(
-                    resumen1, resumen2, cia1["nombre"], cia2["nombre"]
-                )
+                try:
+                    comparativa = compare_insurance_companies(
+                        resumen1, resumen2, cia1["nombre"], cia2["nombre"]
+                    )
+                    
+                    # Guardar la comparativa en un archivo para futuras consultas
+                    with open(archivo_comparativa, 'w', encoding='utf-8') as f:
+                        f.write(comparativa)
+                except APILimitError as e:
+                    st.error(f"⚠️ {str(e)} Por favor, espera unos minutos e intenta nuevamente.")
+                    st.stop()
         
         # Mostrar resultados
         st.markdown("---")

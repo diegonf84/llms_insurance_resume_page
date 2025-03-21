@@ -6,6 +6,10 @@ from config import (
     SUMMARY_TOP_P, SUMMARY_TOP_K
 )
 
+class APILimitError(Exception):
+    """Error personalizado para límites de API y otros errores de Gemini"""
+    pass
+
 def summarize_with_gemini(content, max_tokens=SUMMARY_MAX_TOKENS):
     """
     Use Gemini Pro 1.5 to summarize extensive content.
@@ -16,6 +20,9 @@ def summarize_with_gemini(content, max_tokens=SUMMARY_MAX_TOKENS):
     
     Returns:
         Generated summary
+    
+    Raises:
+        APILimitError: Si hay problemas con la API de Gemini
     """
     logging.info("Starting content summarization with Gemini API")
     
@@ -50,7 +57,10 @@ def summarize_with_gemini(content, max_tokens=SUMMARY_MAX_TOKENS):
     logging.info(f"Sending {len(content)} characters to summarize")
     
     # Generate response
-    response = model.generate_content(prompt)
-    
-    logging.info("Summary generated successfully")
-    return response.text
+    try:
+        response = model.generate_content(prompt)
+        logging.info("Summary generated successfully")
+        return response.text
+    except Exception as e:
+        logging.error(f"Error al generar resumen con Gemini API: {e}")
+        raise APILimitError("Error al comunicarse con la API de Gemini. Posiblemente se alcanzó el límite de uso.")

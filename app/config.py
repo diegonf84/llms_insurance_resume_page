@@ -25,7 +25,7 @@ EXCLUDE_PATTERNS = [
     # Archivos multimedia y documentos
     '.pdf', '.jpg', '.png', '.mp4', '.avi', '.svg', '.jpeg', '.gif', '.webp',
     # Archivos de recursos web
-    '.js', '.css', '.min.js', '.map',
+    '.js', '.css', '.min.js', '/.map',
     # Rutas de recursos
     '/wp-content/', '/wp-includes/', '/plugins/', '/themes/',
     # Bibliotecas comunes
