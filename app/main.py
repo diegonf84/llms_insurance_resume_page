@@ -4,9 +4,13 @@ import os
 import logging
 from website_extractor import WebsiteExtractor
 from content_processor import get_all_pages_content
-from summarizer import summarize_with_gemini, APILimitError
+from summarizer import summarize_with_gemini
 from comparator import compare_insurance_companies
 from config import MAX_PAGES, MAX_CHARS_FOR_ANALYSIS, COMPARATIVE_MAX_TOKENS
+
+class APILimitError(Exception):
+    """Error personalizado para límites de API y otros errores de Gemini"""
+    pass
 
 # Configuración de logging
 logging.basicConfig(

@@ -2,7 +2,10 @@
 import logging
 import google.generativeai as genai
 from config import GEMINI_API_KEY, SUMMARY_TEMPERATURE, COMPARATIVE_MAX_TOKENS
-from summarizer import APILimitError
+
+class APILimitError(Exception):
+    """Error personalizado para límites de API y otros errores de Gemini"""
+    pass
 
 def compare_insurance_companies(resumen1, resumen2, nombre_cia1, nombre_cia2):
     """
