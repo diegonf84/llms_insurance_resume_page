@@ -29,8 +29,17 @@ def procesar_aseguradora(aseguradora, max_chars):
     nombre = aseguradora["id"]
     url = aseguradora["url"]
     
+    # Definir el path del directorio de summaries
+    dir_summaries = "app/data/summaries"
+    
+    # Crear el directorio si no existe
+    if not os.path.exists(dir_summaries):
+        os.makedirs(dir_summaries)
+    
+    # Definir el path del archivo de resumen
+    archivo_resumen = f"{dir_summaries}/resumen_{nombre}.md"
+    
     # Verificar si ya existe un resumen guardado
-    archivo_resumen = f"app/data/summaries/resumen_{nombre}.md"
     if os.path.exists(archivo_resumen):
         st.info(f"Resumen de {aseguradora['nombre']} ya existente, cargando...")
         with open(archivo_resumen, 'r', encoding='utf-8') as f:
